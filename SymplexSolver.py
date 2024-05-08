@@ -11,7 +11,7 @@ class SymplexSolver:
         self.b = b
         self.c = c
         self.n = len(a[0])
-        self.bs = list()
+        self.bs: list[int] = list()
 
     def solve(self) -> None:
         self.print_p()
