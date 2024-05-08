@@ -1,14 +1,9 @@
 from fractions import Fraction
 
-from SymplexSolver import SymplexSolver
-
+from symplexmethod.symplex_solver import SymplexSolver
 
 c = [0, 1, -3, 0, 2, 0]
-a = [
-    [1, 3, -1, 0, 2, 0],
-    [0, -2, 4, 1, 0, 0],
-    [0, -4, 3, 0, 8, 1]
-]
+a = [[1, 3, -1, 0, 2, 0], [0, -2, 4, 1, 0, 0], [0, -4, 3, 0, 8, 1]]
 b = [7, 12, 10]
 
 
@@ -21,5 +16,5 @@ def main():
     solver.solve()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
