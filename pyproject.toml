@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "symplexmethod"
+version = "0.1.0"
+description = "Symplex method for Methods of Optimizations subject"
+authors = ["Azat222 <azat222@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+prettytable = "^3.10.0"
+
+[tool.poetry.scripts]
+main = "symplexmethod.main:main"
+
+[tool.poe.tasks]
+_pylint = "pylint symplexmethod"
+_mypy = "mypy symplexmethod"
+lint = ["_pylint", "_mypy"]
+format = "black symplexmethod"
+
+[tool.poetry.group.dev.dependencies]
+setuptools = "^69.5.1"
+poethepoet = "^0.26.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
