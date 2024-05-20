@@ -16,15 +16,16 @@ class SymplexSolver:
 
     def solve(self) -> None:
         self.print_p()
-        print(self.table)
         self.bs = self.__find_start_basis()
-        i, new_bs = self.__get_to_remove_p()
-        if i == -1:
-            print("РЕШЕНО!")
+        while True:
             print(self.table)
-        print(f"Убираем столбец P{i + 1} и строку P{self.bs[new_bs] + 1}")
-        self.table = self.__create_new_table(i, new_bs)
-        print(self.table)
+            i, new_bs = self.__get_to_remove_p()
+            if i == -1:
+                print("Задача решена")
+                self.__print_answer()
+                break
+            print(f"Убираем столбец P{i + 1} и строку P{self.bs[new_bs] + 1}")
+            self.table = self.__create_new_table(i, new_bs)
 
     def print_p(self):
         print(f"P{0} = ({', '.join(map(str, self.b))})")
@@ -88,5 +89,10 @@ class SymplexSolver:
             el + self.table.p0[bs_i] * coefficients[i]
             for i, el in enumerate(self.table.p0)
         ]
-        print(" ".join(map(str, coefficients)))
         return SymplexTable(bs=new_bs, c=self.c, p0=new_p0, p=new_p)
+
+    def __print_answer(self) -> None:
+        p0, *_ = self.table.solve()
+        print(f"Z_min = {p0}")
+        for i, bs in enumerate(self.table.bs):
+            print(f"X{bs + 1} = {self.table.p0[i]}")
