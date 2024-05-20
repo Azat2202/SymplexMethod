@@ -1,13 +1,16 @@
+import sys
 from fractions import Fraction
 
+from symplexmethod.input.json_input import JSONInput
 from symplexmethod.symplex_solver import SymplexSolver
-
-c = [0, 1, -3, 0, 2, 0]
-a = [[1, 3, -1, 0, 2, 0], [0, -2, 4, 1, 0, 0], [0, -4, 3, 0, 8, 1]]
-b = [7, 12, 10]
 
 
 def main():
+    input_ = JSONInput()
+    if not input_.validate():
+        print("Файл не валиден!")
+        sys.exit(1)
+    c, a, b = input_.read()
     a_fr = [[Fraction(numerator=el) for el in arr] for arr in a]
     b_fr = [Fraction(numerator=el) for el in b]
     c_fr = [Fraction(numerator=el) for el in c]
