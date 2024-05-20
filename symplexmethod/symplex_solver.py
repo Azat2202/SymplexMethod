@@ -17,6 +17,10 @@ class SymplexSolver:
     def solve(self) -> None:
         self.print_p()
         self.bs = self.__find_start_basis()
+        if len(self.bs) == 0:
+            print("Базис не вырожден")
+            self.solve_non_singular()
+            return
         while True:
             print(self.table)
             i, new_bs = self.__get_to_remove_p()
@@ -26,6 +30,23 @@ class SymplexSolver:
                 break
             print(f"Убираем столбец P{i + 1} и строку P{self.bs[new_bs] + 1}")
             self.table = self.__create_new_table(i, new_bs)
+
+    def solve_non_singular(self):
+        """Решение симплекс таблицы с не вырожденным базисом"""
+        print("Будем искать мин новой целевой функции w=" + "+".join(f"y{i}" for i in range(1, len(self.b) + 1)))
+        bs = list(range(self.n, self.n + len(self.b)))
+        w = [Fraction(0) for _ in range(self.n)] + [Fraction(1) for _ in range(len(self.b))]
+        p = [
+            line + [Fraction(1) if i == j else Fraction(0) for j in range(len(bs))]
+            for i, line in enumerate(self.a)
+        ]
+        table = SymplexTable(
+            bs=bs,
+            c=w,
+            p0=self.b,
+            p=p
+        )
+        print(table)
 
     def print_p(self):
         print(f"P{0} = ({', '.join(map(str, self.b))})")

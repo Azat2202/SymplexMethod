@@ -28,6 +28,7 @@ class SymplexTable:
         table.field_names = ["i", "BS", "C"] + [
             f"P{i}" for i in range(len(self.p[0]) + 1)
         ]
+        table.min_width = 5
         for i, _ in enumerate(self.p0):
             table.add_row(
                 [i, f"P{self.bs[i] + 1}", self.c[self.bs[i]], self.p0[i]] + self.p[i]
