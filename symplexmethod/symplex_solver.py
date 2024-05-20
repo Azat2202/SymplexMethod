@@ -29,6 +29,9 @@ class SymplexSolver:
                 print("Задача решена")
                 self.__print_answer()
                 break
+            if new_bs == -1:
+                print("Решения нет!")
+                break
             print(f"Вектор P{i + 1} встает на место вектора P{self.bs[new_bs] + 1} в базисе")
             self.table = self.__create_new_table(i, new_bs)
 
@@ -100,7 +103,6 @@ class SymplexSolver:
             if new_theta < theta_min:
                 theta_min = new_theta
                 theta_i = i
-        assert theta_i != -1
         return p, theta_i
 
     def __create_new_table(self, p_i: int, bs_i: int) -> SymplexTable:
