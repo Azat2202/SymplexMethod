@@ -2,7 +2,7 @@ from fractions import Fraction
 from typing import List, Tuple
 
 from symplexmethod.models.symplex_table import SymplexTable
-from symplexmethod.vector_utilities import sum_vectors, mul_vectors, mul_vector
+from symplexmethod.vector_utilities import sum_vectors, mul_vector
 
 
 class SymplexSolver:
@@ -77,9 +77,7 @@ class SymplexSolver:
         # -1 + 4 * x = 0
         # x = -el / div_value
         coefficients = [
-            -el / div_value
-            if i != bs_i
-            else (1 - div_value)/div_value
+            -el / div_value if i != bs_i else (1 - div_value) / div_value
             for i, el in enumerate(self.table.get_p(p_i))
         ]
         new_p = [
@@ -91,9 +89,4 @@ class SymplexSolver:
             for i, el in enumerate(self.table.p0)
         ]
         print(" ".join(map(str, coefficients)))
-        return SymplexTable(
-            bs=new_bs,
-            c=self.c,
-            p0=new_p0,
-            p=new_p
-        )
+        return SymplexTable(bs=new_bs, c=self.c, p0=new_p0, p=new_p)
