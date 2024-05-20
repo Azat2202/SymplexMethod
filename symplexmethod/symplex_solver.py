@@ -2,6 +2,7 @@ from fractions import Fraction
 from typing import List, Tuple
 
 from symplexmethod.models.symplex_table import SymplexTable
+from symplexmethod.vector_utilities import sum_vectors, mul_vectors, mul_vector
 
 
 class SymplexSolver:
@@ -22,6 +23,8 @@ class SymplexSolver:
             print("РЕШЕНО!")
             print(self.table)
         print(f"Убираем столбец P{i + 1} и строку P{self.bs[new_bs] + 1}")
+        self.table = self.__create_new_table(i, new_bs)
+        print(self.table)
 
     def print_p(self):
         print(f"P{0} = ({', '.join(map(str, self.b))})")
@@ -67,3 +70,30 @@ class SymplexSolver:
                 theta_i = i
         assert theta_i != -1
         return p, theta_i
+
+    def __create_new_table(self, p_i: int, bs_i: int) -> SymplexTable:
+        new_bs = [el if i != bs_i else p_i for i, el in enumerate(self.table.bs)]
+        div_value = self.table.p[bs_i][p_i]
+        # -1 + 4 * x = 0
+        # x = -el / div_value
+        coefficients = [
+            -el / div_value
+            if i != bs_i
+            else (1 - div_value)/div_value
+            for i, el in enumerate(self.table.get_p(p_i))
+        ]
+        new_p = [
+            sum_vectors(line, mul_vector(self.table.p[bs_i], coefficients[i]))
+            for i, line in enumerate(self.table.p)
+        ]
+        new_p0 = [
+            el + self.table.p0[bs_i] * coefficients[i]
+            for i, el in enumerate(self.table.p0)
+        ]
+        print(" ".join(map(str, coefficients)))
+        return SymplexTable(
+            bs=new_bs,
+            c=self.c,
+            p0=new_p0,
+            p=new_p
+        )

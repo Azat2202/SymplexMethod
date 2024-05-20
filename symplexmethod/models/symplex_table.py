@@ -4,7 +4,7 @@ from typing import List
 
 from prettytable import PrettyTable
 
-from symplexmethod.utility import mul_vectors
+from symplexmethod.vector_utilities import mul_vectors
 
 
 @dataclass
