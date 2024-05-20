@@ -1,46 +1,8 @@
-from dataclasses import dataclass
 from fractions import Fraction
-from typing import List
+from typing import List, Tuple
 
-from prettytable import PrettyTable
-
-
-def mul_vectors(a: list, b: list):
-    return [a[i] * b[i] for i in range(len(a))]
-
-
-@dataclass
-class SymplexTable:
-    bs: list[int]
-    c: list[Fraction]
-    p0: list[Fraction]
-    p: list[list[Fraction]]
-
-    def solve(self) -> list[Fraction]:
-        out: list[Fraction] = [sum(mul_vectors(self.p0, self.__get_basis()))]
-        for i in range(len(self.p[0])):
-            out.append(
-                sum(mul_vectors(self.__get_p(i), self.__get_basis())) - self.c[i]
-            )
-        return out
-
-    def __str__(self) -> str:
-        table = PrettyTable()
-        table.field_names = ["i", "BS", "C"] + [
-            f"P{i}" for i in range(len(self.p[0]) + 1)
-        ]
-        for i, _ in enumerate(self.p0):
-            table.add_row(
-                [i, f"P{self.bs[i]}", self.c[self.bs[i]], self.p0[i]] + self.p[i]
-            )
-        table.add_row(["", "", ""] + self.solve())
-        return str(table)
-
-    def __get_p(self, i: int) -> List[Fraction]:
-        return [arr[i] for arr in self.p]
-
-    def __get_basis(self) -> list[Fraction]:
-        return [self.c[b] for b in self.bs]
+from symplexmethod.models.symplex_table import SymplexTable
+from symplexmethod.vector_utilities import sum_vectors, mul_vector
 
 
 class SymplexSolver:
@@ -50,11 +12,19 @@ class SymplexSolver:
         self.c = c
         self.n = len(a[0])
         self.bs: list[int] = []
+        self.table = self.__create_start_symplex_table()
 
     def solve(self) -> None:
         self.print_p()
-        table = self.__create_start_symplex_table()
-        print(table)
+        print(self.table)
+        self.bs = self.__find_start_basis()
+        i, new_bs = self.__get_to_remove_p()
+        if i == -1:
+            print("РЕШЕНО!")
+            print(self.table)
+        print(f"Убираем столбец P{i + 1} и строку P{self.bs[new_bs] + 1}")
+        self.table = self.__create_new_table(i, new_bs)
+        print(self.table)
 
     def print_p(self):
         print(f"P{0} = ({', '.join(map(str, self.b))})")
@@ -80,3 +50,43 @@ class SymplexSolver:
             if len(out) != i + 1:
                 return []
         return out
+
+    def __get_to_remove_p(self) -> Tuple[int, int]:
+        p = -1
+        for i, el in enumerate(self.table.solve()[1:]):
+            if el > 0:
+                p = i
+        if p == -1:
+            return -1, -1
+        p_data = self.table.get_p(p)
+        theta_min = Fraction(10000)
+        theta_i = -1
+        for i, el in enumerate(p_data):
+            if el <= 0:
+                continue
+            new_theta = self.table.p0[i] / el
+            if new_theta < theta_min:
+                theta_min = new_theta
+                theta_i = i
+        assert theta_i != -1
+        return p, theta_i
+
+    def __create_new_table(self, p_i: int, bs_i: int) -> SymplexTable:
+        new_bs = [el if i != bs_i else p_i for i, el in enumerate(self.table.bs)]
+        div_value = self.table.p[bs_i][p_i]
+        # -1 + 4 * x = 0
+        # x = -el / div_value
+        coefficients = [
+            -el / div_value if i != bs_i else (1 - div_value) / div_value
+            for i, el in enumerate(self.table.get_p(p_i))
+        ]
+        new_p = [
+            sum_vectors(line, mul_vector(self.table.p[bs_i], coefficients[i]))
+            for i, line in enumerate(self.table.p)
+        ]
+        new_p0 = [
+            el + self.table.p0[bs_i] * coefficients[i]
+            for i, el in enumerate(self.table.p0)
+        ]
+        print(" ".join(map(str, coefficients)))
+        return SymplexTable(bs=new_bs, c=self.c, p0=new_p0, p=new_p)
