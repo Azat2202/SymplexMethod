@@ -6,3 +6,9 @@ dist/
 main.build
 main.dist
 main.onefile-build
+symplexmethod
+symplexmethod.exe
+symplexmethod.build/
+symplexmethod.dist/
+symplexmethod.onefile-build/
+main.exe
