@@ -3,3 +3,6 @@ venv
 .idea
 .mypy_cache/
 dist/
+main.build
+main.dist
+main.onefile-build
