@@ -11,7 +11,7 @@
       Симплекс Метод
     </h1>
     <p>
-      Для использования заполните недостающие клетки и нажмите кнопку Run (после сообщения о готовности в поле)
+      Для использования заполните недостающие клетки и нажмите кнопку Run (после сообщения о готовности в поле вывода)
     </p>
     <div>
         <button onclick="changeN(-1)">-N</button>
@@ -19,11 +19,11 @@
         <button onclick="changeM(-1)">-M</button>
         <button onclick="changeM(1)">+M</button>
     </div>
-    <label>Матрица C: (правая часть в системе уравнений)</label>
+    <label>Матрица C: (коэффициенты перед x в уравнении для Z)</label>
     <div id="c-matrix-container" class="matrix-input"></div>
     <label>Матрица A: (коэффициенты перед x в системе уравнений)</label>
     <div id="a-matrix-container" class="matrix-input"></div>
-    <label>Матрица B: (коэффициенты перед x в уравнении для минимизации)</label>
+    <label>Матрица B: (правая часть в системе уравнений)</label>
     <div id="b-matrix-container" class="matrix-input"></div>
     <button onclick="solveSymplex()" id="run">Запустить!</button>
     <br />

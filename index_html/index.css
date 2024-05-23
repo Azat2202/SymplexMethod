@@ -58,3 +58,7 @@ input[type="number"] {
     height: 50px;
     font-size: 15px;
 }
+
+textarea{
+    font-family: monospace;
+}

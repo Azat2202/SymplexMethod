@@ -12,7 +12,7 @@ async function loadEnvironment() {
     await pyodide.setStdout({
         batched: (s) => output.value += s + "\n",
     })
-    output.value += "Ready!\n";
+    output.value += "Готов!\n";
     return pyodide;
 }
 

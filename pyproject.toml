@@ -10,7 +10,6 @@ python = "^3.8"
 prettytable = "^3.10.0"
 mypy = "^1.10.0"
 pylint = "^3.2.1"
-nuitka = "^2.2.3"
 
 
 [tool.poetry.scripts]
