@@ -20,15 +20,15 @@ const pyodideReadyPromise = loadEnvironment();
 
 async function solveSymplex() {
     const pyodide = await pyodideReadyPromise;
+    const a = parseMatrixA();
+    const b = parseMatrixB();
+    const c = parseMatrixC();
     try {
-        const result = await pyodide.runPythonAsync(`
+        const solve = await pyodide.runPythonAsync(`
           from symplexmethod import solve
-          solve([0, 1, -3, 0, 2, 0], [
-          [1, 3, -1, 0, 2, 0],
-          [0, -2, 4, 1, 0, 0],
-          [0, -4, 3, 0, 8, 1]
-          ], [7, 12, 10])
+          solve
       `);
+        const result = solve(c, a, b)
         console.log(result)
     } catch (err) {
         console.log(err);
@@ -60,20 +60,20 @@ function parseMatrixA() {
 
 function parseMatrixB() {
     const matrix = [];
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < m; i++) {
         const value = document.getElementById(`b-cell-${i}`).value;
         matrix.push(value ? parseFloat(value) : 0);
     }
-    console.log(matrix)
+    return matrix;
 }
 
 function parseMatrixC() {
     const matrix = [];
-    for (let i = 0; i < m; i++) {
+    for (let i = 0; i < n; i++) {
         const value = document.getElementById(`c-cell-${i}`).value;
         matrix.push(value ? parseFloat(value) : 0);
     }
-    console.log(matrix)
+    return matrix;
 }
 
 
@@ -81,7 +81,7 @@ function createMatrixInputs() {
     const b_container = document.getElementById("b-matrix-container");
     b_container.innerHTML = '';
     b_container.style.gridTemplateColumns = `repeat(${n}, auto)`;
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < m; i++) {
         const input = document.createElement("input");
         input.value = 0;
         input.type = "number";
@@ -107,7 +107,7 @@ function createMatrixInputs() {
     c_container.innerHTML = '';
     c_container.style.gridTemplateColumns = `repeat(${m}, auto)`;
 
-    for (let i = 0; i < m; i++) {
+    for (let i = 0; i < n; i++) {
         const input = document.createElement("input");
         input.value = 0;
         input.type = "number";
