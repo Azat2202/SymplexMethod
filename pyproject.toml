@@ -20,7 +20,6 @@ _pylint = "pylint symplexmethod"
 _mypy = "mypy symplexmethod"
 lint = ["_pylint", "_mypy"]
 format = "black symplexmethod"
-build = "nuitka --standalone --onefile symplexmethod "
 
 [tool.poetry.group.dev.dependencies]
 setuptools = "^69.5.1"
