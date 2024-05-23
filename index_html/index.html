@@ -1,14 +1,30 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
+    <link href="index.css" rel="stylesheet">
   </head>
 
   <body>
+    <h1>
+      Симплекс Метод
+    </h1>
     <p>
-      You can execute any Python code. Just enter something in the box below and
-      click the button.
+      Для использования заполните недостающие клетки и нажмите кнопку Run (после сообщения о готовности в поле)
     </p>
+    <div>
+        <button onclick="changeN(-1)">-N</button>
+        <button onclick="changeN(1)">+N</button><br>
+        <button onclick="changeM(-1)">-M</button>
+        <button onclick="changeM(1)">+M</button>
+    </div>
+    <label>Матрица B: (правая часть в системе уравнений)</label>
+    <div id="b-matrix-container" class="matrix-input"></div>
+    <label>Матрица A: (коэффициенты перед x в системе уравнений)</label>
+    <div id="a-matrix-container" class="matrix-input"></div>
+    <label>Матрица C: (коэффициенты перед x в уравнении для минимизации)</label>
+    <div id="c-matrix-container" class="matrix-input"></div>
     <input id="с" value="[0, 1, -3, 0, 2, 0]" />
     <input id="a" value="[0, 1, -3, 0, 2, 0], [
               [1, 3, -1, 0, 2, 0],
@@ -19,59 +35,7 @@
     <br />
     <br />
     <div>Output:</div>
-    <textarea id="output" style="width: 100%;" rows="6" disabled></textarea>
-
-    <script>
-      const output = document.getElementById("output");
-      async function loadEnvironment(){
-        const pyodide = await loadPyodide();
-        await pyodide.loadPackage(['micropip']);
-        await pyodide.runPythonAsync(`
-            import micropip
-            await micropip.install('symplexmethod-0.1.0-py3-none-any.whl')
-        `);
-        output.value += "Ready!\n";
-        return pyodide;
-      }
-      const pyodideReadyPromise = loadEnvironment();
-      async function solveSymplex(){
-        const pyodide = await pyodideReadyPromise;
-        try{
-          const result = await pyodide.runPythonAsync(`
-              from symplexmethod import solve
-              solve([0, 1, -3, 0, 2, 0], [
-              [1, 3, -1, 0, 2, 0],
-              [0, -2, 4, 1, 0, 0],
-              [0, -4, 3, 0, 8, 1]
-              ], [7, 12, 10])
-          `);
-          console.log(result)
-        } catch (err){
-          console.log(err);
-        }
-      }
-
-    </script>
-
-<!--    <script>-->
-<!--      async function loadPyodideAndRun() {-->
-<!--          let pyodide = await loadPyodide();-->
-<!--          await pyodide.loadPackage(['micropip']);-->
-<!--          await pyodide.runPythonAsync(`-->
-<!--              import micropip-->
-<!--              await micropip.install('symplexmethod-0.1.0-py3-none-any.whl')-->
-<!--          `);-->
-<!--          const result = await pyodide.runPythonAsync(`-->
-<!--              from symplexmethod import solve-->
-<!--              solve([0, 1, -3, 0, 2, 0], [-->
-<!--              [1, 3, -1, 0, 2, 0],-->
-<!--              [0, -2, 4, 1, 0, 0],-->
-<!--              [0, -4, 3, 0, 8, 1]-->
-<!--              ], [7, 12, 10])-->
-<!--          `, );-->
-<!--          document.getElementById('output').innerText = result;-->
-<!--        }-->
-<!--        loadPyodideAndRun();-->
-<!--    </script>-->
+    <textarea id="output" style="width: 100%; height:500px;" rows="6" disabled></textarea>
+    <script src="index.js"></script>
   </body>
 </html>
