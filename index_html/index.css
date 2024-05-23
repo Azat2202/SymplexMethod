@@ -1,4 +1,61 @@
+@import url('https://fonts.cdnfonts.com/css/soyuz-grotesk');
+@font-face {
+    font-family: "sans-serif";
+}
+*{
+    font-family: 'Soyuz Grotesk', sans-serif;
+    margin: 3px;
+}
+
+body {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #E8EDE7;
+    padding: 0 20px 20px 20px;
+    color: #036280;
+}
+header{
+    font-family: serif;
+    color: #012E4A;
+    font-size: 2.5em;
+    text-align: center;
+}
+
+button {
+    background-color: #81BECE;
+    border: none;
+    text-align: center;
+    width: 50px;
+    padding: 0.2em;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+button:hover{
+    background-color: #378BA4;
+}
+
+input{
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+input[type="number"] {
+    height: 1.5em;
+    width: 50px;
+    background: #81BECE;
+}
+
 .matrix-input {
     display: grid;
     gap: 5px;
+    justify-content: start;
+}
+
+#run{
+    width: 100px;
+    height: 50px;
+    font-size: 15px;
 }

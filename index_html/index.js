@@ -31,6 +31,7 @@ async function solveSymplex() {
         const result = solve(c, a, b)
         console.log(result)
     } catch (err) {
+        output.value += "Ошибка во время выполнения!\n"
         console.log(err);
     }
 }
@@ -80,7 +81,7 @@ function parseMatrixC() {
 function createMatrixInputs() {
     const b_container = document.getElementById("b-matrix-container");
     b_container.innerHTML = '';
-    b_container.style.gridTemplateColumns = `repeat(${n}, auto)`;
+    b_container.style.gridTemplateColumns = `repeat(${m}, auto)`;
     for (let i = 0; i < m; i++) {
         const input = document.createElement("input");
         input.value = 0;
@@ -105,7 +106,7 @@ function createMatrixInputs() {
 
     const c_container = document.getElementById("c-matrix-container");
     c_container.innerHTML = '';
-    c_container.style.gridTemplateColumns = `repeat(${m}, auto)`;
+    c_container.style.gridTemplateColumns = `repeat(${n}, auto)`;
 
     for (let i = 0; i < n; i++) {
         const input = document.createElement("input");

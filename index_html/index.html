@@ -25,16 +25,10 @@
     <div id="a-matrix-container" class="matrix-input"></div>
     <label>Матрица B: (коэффициенты перед x в уравнении для минимизации)</label>
     <div id="b-matrix-container" class="matrix-input"></div>
-    <input id="с" value="[0, 1, -3, 0, 2, 0]" />
-    <input id="a" value="[0, 1, -3, 0, 2, 0], [
-              [1, 3, -1, 0, 2, 0],
-              [0, -2, 4, 1, 0, 0],
-              [0, -4, 3, 0, 8, 1]]" />
-    <input id="b" value="[7, 12, 10]" />
-    <button onclick="solveSymplex()">Run</button>
+    <button onclick="solveSymplex()" id="run">Запустить!</button>
     <br />
     <br />
-    <div>Output:</div>
+    <div>Вывод:</div>
     <textarea id="output" style="width: 100%; height:500px;" rows="6" disabled></textarea>
     <script src="index.js"></script>
   </body>
