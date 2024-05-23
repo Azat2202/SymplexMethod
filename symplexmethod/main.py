@@ -11,6 +11,10 @@ def main():
         print("Файл не валиден!")
         sys.exit(1)
     c, a, b = input_.read()
+    solve(c, a, b)
+
+
+def solve(c: list[int], a: list[list[int]], b: list[int]):
     a_fr = [[Fraction(numerator=el) for el in arr] for arr in a]
     b_fr = [Fraction(numerator=el) for el in b]
     c_fr = [Fraction(numerator=el) for el in c]

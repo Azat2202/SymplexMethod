@@ -24,6 +24,8 @@ class SymplexTable:
         return [arr[i] for arr in self.p]
 
     def __str__(self) -> str:
+        if len(self.bs) == 0:
+            return ""
         table = PrettyTable()
         table.field_names = ["i", "BS", "C"] + [
             f"P{i}" for i in range(len(self.p[0]) + 1)
