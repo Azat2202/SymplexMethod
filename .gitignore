@@ -4,3 +4,6 @@ venv
 .mypy_cache/
 dist
 **/*.whl
+main.build
+main.dist
+main.onefile-build

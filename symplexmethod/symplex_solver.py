@@ -17,6 +17,11 @@ class SymplexSolver:
     def solve(self) -> None:
         self.print_p()
         self.bs = self.__find_start_basis()
+        if len(self.bs) == 0:
+            print("Базис не вырожден")
+            self.table = self.solve_non_singular()
+            self.bs = self.table.bs
+            print("Новая таблица:")
         while True:
             print(self.table)
             i, new_bs = self.__get_to_remove_p()
@@ -24,8 +29,32 @@ class SymplexSolver:
                 print("Задача решена")
                 self.__print_answer()
                 break
-            print(f"Убираем столбец P{i + 1} и строку P{self.bs[new_bs] + 1}")
+            if new_bs == -1:
+                print("Решения нет!")
+                break
+            print(
+                f"Вектор P{i + 1} встает на место вектора P{self.bs[new_bs] + 1} в базисе"
+            )
             self.table = self.__create_new_table(i, new_bs)
+
+    def solve_non_singular(self) -> SymplexTable:
+        """Решение симплекс таблицы с не вырожденным базисом"""
+        print(
+            "Будем искать минимум новой целевой функции w="
+            + "+".join(f"y{i}" for i in range(1, len(self.b) + 1))
+        )
+        bs = list(range(self.n, self.n + len(self.b)))
+        w = [Fraction(0) for _ in range(self.n)] + [
+            Fraction(1) for _ in range(len(self.b))
+        ]
+        p = [
+            line + [Fraction(1) if i == j else Fraction(0) for j in range(len(bs))]
+            for i, line in enumerate(self.a)
+        ]
+        solver = SymplexSolver(a=p, b=self.b, c=w)
+        solver.solve()
+        new_p = [line[: self.n] for line in solver.table.p]
+        return SymplexTable(bs=solver.table.bs, c=self.c, p0=solver.table.p0, p=new_p)
 
     def print_p(self):
         print(f"P{0} = ({', '.join(map(str, self.b))})")
@@ -69,14 +98,11 @@ class SymplexSolver:
             if new_theta < theta_min:
                 theta_min = new_theta
                 theta_i = i
-        assert theta_i != -1
         return p, theta_i
 
     def __create_new_table(self, p_i: int, bs_i: int) -> SymplexTable:
         new_bs = [el if i != bs_i else p_i for i, el in enumerate(self.table.bs)]
         div_value = self.table.p[bs_i][p_i]
-        # -1 + 4 * x = 0
-        # x = -el / div_value
         coefficients = [
             -el / div_value if i != bs_i else (1 - div_value) / div_value
             for i, el in enumerate(self.table.get_p(p_i))

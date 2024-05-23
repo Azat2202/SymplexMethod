@@ -6,10 +6,12 @@ authors = ["Azat222 <azat222@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.8"
 prettytable = "^3.10.0"
 mypy = "^1.10.0"
 pylint = "^3.2.1"
+nuitka = "^2.2.3"
+
 
 [tool.poetry.scripts]
 main = "symplexmethod.main:main"
@@ -19,6 +21,7 @@ _pylint = "pylint symplexmethod"
 _mypy = "mypy symplexmethod"
 lint = ["_pylint", "_mypy"]
 format = "black symplexmethod"
+build = "nuitka --standalone --onefile symplexmethod "
 
 [tool.poetry.group.dev.dependencies]
 setuptools = "^69.5.1"
